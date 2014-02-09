@@ -1,0 +1,16 @@
+{
+  "name":    "stdweb-google",
+  "version": "0.0.1",
+
+  "main": "lib/stdweb-google.js",
+
+  "dependencies": {
+    "passport":        "~0.2.0",
+    "passport-google": "~0.3.0",
+    "stdweb":          "~0.2.1"
+  },
+
+  "devDependencies": {
+    "coffee-script": "1.2.x"
+  }
+}
