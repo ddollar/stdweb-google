@@ -14,7 +14,8 @@ module.exports.init = (domain) ->
       if email.split("@")[1] is domain then done(null, email:email) else done("invalid")
 
   authenticate = (req, res, next) ->
-    url = "//#{req.headers.host}#{req.originalUrl}"
+    protocol = req.headers['x-forwarded-proto'] || req.protocol
+    url = "#{protocol}://#{req.headers.host}#{req.originalUrl}"
     passport._strategies.google._relyingParty.returnUrl = url
     passport.authenticate("google", failureRedirect:"auth/invalid") req, res, next
 
