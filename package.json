@@ -7,7 +7,7 @@
   "dependencies": {
     "passport":        "~0.2.0",
     "passport-google": "~0.3.0",
-    "stdweb":          "~0.3"
+    "stdweb":          "~0.4"
   },
 
   "devDependencies": {
