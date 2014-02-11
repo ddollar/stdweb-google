@@ -20,14 +20,20 @@ module.exports.init = (domain) ->
     passport.authenticate("google", failureRedirect:"auth/invalid") req, res, next
 
   authenticated: (req, res, next) ->
+    url = req.url.split("?")[0]
+    return next() if url is "/auth/google"
+    return next() if url is "/auth/google/callback"
+    return next() if url is "/auth/invalid"
     return next() if process.env.NODE_ENV is "development"
     return next() if req.isAuthenticated()
     req.session.desired = req.originalUrl
     res.redirect "auth/google"
 
-  inject: (app) ->
+  middleware: (app) ->
     app.use passport.initialize()
     app.use passport.session()
+
+  routes: (app) ->
     app.get "/auth/google", authenticate, (req, res) ->
       if req.session.desired then res.redirect(req.session.desired) else res.redirect "../.."
     app.get "/auth/google/callback", authenticate, (req, res) ->
