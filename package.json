@@ -1,6 +1,6 @@
 {
   "name":    "stdweb-google",
-  "version": "0.4.1",
+  "version": "0.4.2",
 
   "main": "lib/stdweb-google.js",
 
