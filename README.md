@@ -11,9 +11,11 @@ Use Google auth with [stdweb](https://github.com/ddollar/stdweb)
 ```coffeescript
 google = require("stdweb-google").init("mydomain.com")
 
-app = stdweb("myapp")
+app = stdweb "myapp", (app) ->
+  google.middleware app
 
-google.inject(app)
+google.routes app
+
 ```
 
 ## License
