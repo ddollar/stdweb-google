@@ -1,6 +1,7 @@
 passport = require("passport")
+us       = require("underscore")
 
-module.exports.init = (domain) ->
+module.exports.init = (allowed_domains) ->
 
   passport.serializeUser   (user, done) -> done null, user
   passport.deserializeUser (obj, done)  -> done null, obj
@@ -11,7 +12,10 @@ module.exports.init = (domain) ->
     realm:     process.env.GOOGLE_AUTH_REALM
     (identifier, profile, done) ->
       email = profile.emails[0].value
-      if email.split("@")[1] is domain then done(null, email:email) else done("invalid")
+      if us.indexOf(allowed_domains.split(","), email.split("@")[1]) > -1
+        done null, email:email
+      else
+        done "invalid"
 
   authenticate = (req, res, next) ->
     protocol = req.headers['x-forwarded-proto'] || req.protocol
@@ -40,3 +44,9 @@ module.exports.init = (domain) ->
       res.redirect "../.."
     app.get "/auth/invalid", (req, res) ->
       res.status(403).send "invalid"
+    app.get "/login", (req, res) ->
+      req.session.desired = "../.."
+      res.redirect "../auth/google"
+    app.get "/logout", (req, res) ->
+      req.logout()
+      res.redirect "../.."
